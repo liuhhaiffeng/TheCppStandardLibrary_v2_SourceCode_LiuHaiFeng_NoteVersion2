@@ -1,0 +1,29 @@
+本文件夹提供的示例代码, 当我在CodeBlocks中使用MingW32 (version: GCC 4.8.1),
+编译时, 编译正常通过, 但运行时异常出错导致程序退出.
+
+示例代码: regex1.cpp 
+
+// find XML/HTML-tagged value (using default syntax):
+    regex reg1("<.*>.*</.*>");
+    bool found = regex_match ("<tag>value</tag>",   // data
+                              reg1);                // regular expression
+    out(found);
+    
+    // find XML/HTML-tagged value (tags before and after the value must match):
+    regex reg2("<(.*)>.*</\\1>");
+    found = regex_match ("<tag>value</tag>",        // data
+                         reg2);                     // regular expression
+    out(found);
+
+
+程序运行后只输出1个:
+found
+
+就立即提示异常退出
+
+感觉和 "regex reg2("<(.*)>.*</\\1>");"这句有关系, 我将其修改为"regex
+reg2("<(.*)>.*</\1>");", 少一反斜线, 运行就没有问题, 但肯定不是想要的结果,
+在确认正则表达式的写法没有什么问题之后, 我在CodeBlocks中使用VC2013编译器来
+编译运行, 结果程序运行正常,没有任何错误.
+
+这说明GCC 4.8.1编译器下C++11 正则表达式的程序的编译,可能存在Bug.
